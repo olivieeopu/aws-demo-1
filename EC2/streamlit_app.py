@@ -6,10 +6,10 @@ import plotly.express as px
 
 
 # LOAD FILES
-model = joblib.load("model_artifact/model.joblib")
-scaler = joblib.load("model_artifact/scaler.joblib")
-encoder = joblib.load("model_artifact/encoder.joblib")
-feature_names = joblib.load("model_artifact/feature_names.joblib")
+model = joblib.load("EC2/model_artifact/model.joblib")
+scaler = joblib.load("EC2/model_artifact/scaler.joblib")
+encoder = joblib.load("EC2/model_artifact/encoder.joblib")
+feature_names = joblib.load("EC2/model_artifact/feature_names.joblib")
 
 # PAGE CONFIG
 st.set_page_config(
