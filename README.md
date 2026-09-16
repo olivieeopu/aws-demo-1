@@ -237,5 +237,6 @@ The Streamlit application collects financial information from users, sends the r
                     └─────────────────────┘
 
 Documentation : https://drive.google.com/drive/folders/1EdFbWz2zYBAbWpGpBoyB6NfdKXqA7iUr?usp=sharing
+AWS Public Link : https://aws-demo-1-uubwmepozsrbfpza5iga7z.streamlit.app/
 
 
