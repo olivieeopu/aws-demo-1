@@ -1,5 +1,5 @@
 # aws-demo-1
-Final Project of Model Deployment
+Final Project of Model Deployment | Credit Score Prediction
 
 # Credit Score Prediction
 
