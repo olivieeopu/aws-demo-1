@@ -107,7 +107,6 @@ Model performance was evaluated using several classification metrics:
 - Confusion Matrix
 
 The comparison between models was used to determine the most suitable model for the final prediction system.
-<img width="1400" height="384" alt="image" src="https://github.com/user-attachments/assets/0abbfe23-3ee0-4231-82b9-c6b9729fd9ee" />
 
 
 ## Results
