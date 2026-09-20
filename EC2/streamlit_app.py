@@ -4,19 +4,21 @@ import numpy as np
 import joblib
 import plotly.express as px
 
-
-# LOAD FILES
-model = joblib.load(ARTIFACT_DIR / "model.joblib")
-scaler = joblib.load(ARTIFACT_DIR / "scaler.joblib")
-encoder = joblib.load(ARTIFACT_DIR / "encoder.joblib")
-feature_names = joblib.load(ARTIFACT_DIR / "feature_names.joblib")
-
 # PAGE CONFIG
 st.set_page_config(
     page_title="Credit Score Prediction",
     page_icon="💳",
     layout="wide"
 )
+
+BASE_DIR = Path(__file__).resolve().parent
+ARTIFACT_DIR = BASE_DIR / "model_artifact"
+
+# LOAD FILES
+model = joblib.load(ARTIFACT_DIR / "model.joblib")
+scaler = joblib.load(ARTIFACT_DIR / "scaler.joblib")
+encoder = joblib.load(ARTIFACT_DIR / "encoder.joblib")
+feature_names = joblib.load(ARTIFACT_DIR / "feature_names.joblib")
 
 st.title("💳 Credit Score Prediction")
 
