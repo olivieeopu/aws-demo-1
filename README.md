@@ -1,241 +1,144 @@
-# aws-demo-1
-Final Project of Model Deployment | Credit Score Prediction
+# Klasifikasi Skor Kredit
 
-# Credit Score Prediction
+Proyek akhir mata kuliah Model Deployment untuk mengklasifikasikan skor kredit berdasarkan informasi keuangan dan riwayat kredit. Proyek mencakup persiapan data, perbandingan model machine learning, evaluasi, serta implementasi aplikasi menggunakan Streamlit dan layanan AWS.
 
-An end-to-end machine learning project for predicting customer credit scores based on financial and credit-related information. This project covers data preprocessing, model development and evaluation, as well as cloud deployment using AWS and Streamlit.
+**tools:** Python, Scikit-learn, XGBoost, Optuna, Streamlit, Amazon S3, Amazon SageMaker, dan Amazon EC2.
 
-## Background
+## Latar Belakang
 
-Credit scores are commonly used to represent an individual's creditworthiness and can support financial institutions in assessing potential credit risk. However, determining credit scores involves considering multiple financial factors, such as income, outstanding debt, credit history, payment behavior, and credit utilization.
+Informasi seperti pendapatan, utang, riwayat kredit, dan perilaku pembayaran dapat digunakan untuk mempelajari pola kategori skor kredit.
 
-This project explores the use of machine learning to classify customers into three credit score categories: **Poor, Standard, and Good**. The project was developed as an end-to-end machine learning workflow, starting from raw data preparation and model experimentation to deployment as an interactive web application.
+Proyek ini mengeksplorasi penggunaan machine learning untuk mengklasifikasikan data ke dalam tiga kategori: **Poor, Standard, dan Good**. Hasil pengembangan model kemudian disajikan melalui aplikasi web.
 
-## Objectives
+## Tujuan
 
-The main objectives of this project are:
-
-- Prepare and transform financial data into a suitable format for machine learning.
-- Identify relevant financial and credit-related features for credit score classification.
-- Develop and compare several machine learning classification models.
-- Handle class imbalance to improve model performance across credit score categories.
-- Optimize model performance through hyperparameter tuning.
-- Evaluate the models using appropriate multiclass classification metrics.
-- Deploy the trained model as a cloud-based prediction service.
-- Develop an interactive web application that allows users to obtain credit score predictions.
+- Menyiapkan data keuangan untuk pemodelan.
+- Membandingkan Logistic Regression, Random Forest, dan XGBoost.
+- Mengevaluasi SMOTE dan pembobotan kelas untuk menangani ketidakseimbangan kelas.
+- Mengoptimalkan hyperparameter menggunakan Optuna.
+- Memilih model berdasarkan hasil evaluasi klasifikasi multikelas.
+- Mengimplementasikan aplikasi prediksi menggunakan Streamlit dan layanan AWS.
 
 ## Dataset
 
-The dataset contains customer financial and credit-related information used to predict credit score categories.
-
-The target variable is **Credit_Score**, consisting of three classes:
+Data yang digunakan dalam eksperimen berjumlah **25.000 records** dengan variabel target `Credit_Score`:
 
 - **Poor**
 - **Standard**
 - **Good**
 
-Some of the information used for prediction includes customer income, credit history, outstanding debt, credit utilization, number of loans, delayed payments, and other financial characteristics.
+Fitur mencakup informasi pendapatan, utang, riwayat kredit, jumlah pinjaman, keterlambatan pembayaran, serta karakteristik keuangan lainnya.
 
-The dataset contains approximately **25,000 records** before preprocessing.
+Data dibagi menjadi **80% data training dan 20% data testing** menggunakan _stratified_ untuk mempertahankan proporsi kelas.
 
-> The raw dataset is not included in this repository if redistribution is restricted by the original data source.
+## Persiapan Data
 
-## Project Workflow
+Tahap persiapan data meliputi:
 
-The overall machine learning workflow consists of:
-
-1. Data Understanding
-2. Data Cleaning
-3. Exploratory Data Analysis
-4. Feature Engineering
-5. Data Preprocessing
-6. Model Development
-7. Hyperparameter Tuning
-8. Model Evaluation
-9. Model Packaging
-10. Cloud Deployment
-11. Streamlit Application
-
-## Data Preprocessing
-
-Several preprocessing steps were performed before model training, including:
-
-- Removing unnecessary identifier columns.
-- Handling missing and invalid values.
-- Detecting and handling unrealistic numerical values and outliers.
-- Transforming skewed numerical features.
-- Encoding categorical variables.
-- Scaling numerical features.
-- Splitting the dataset into training and testing sets while maintaining the target class distribution.
+1. Menghapus kolom identifier yang tidak digunakan untuk pemodelan.
+2. Menangani nilai kosong, tidak valid, dan nilai numerik yang tidak wajar.
+3. Memeriksa serta menangani anomali pada data entry.
+4. Melakukan transformasi pada fitur numerik tertentu.
+5. Melakukan encoding variabel kategorikal.
+6. Melakukan scaling fitur numerik sesuai kebutuhan model.
 
 ## Feature Engineering
 
-Additional features were created to better represent customers' financial conditions and credit risk.
+Fitur tambahan dikembangkan untuk merepresentasikan hubungan antarvariabel keuangan, antara lain:
 
-Examples include:
+- **Debt-to-Income Ratio:** rasio utang terhadap pendapatan.
+- **EMI Burden:** indikator beban cicilan.
+- **Financial Exposure:** indikator eksposur keuangan.
+- **Risk Score:** indikator gabungan yang dirancang dalam proyek.
 
-- **Debt-to-Income Ratio**
-- **EMI Burden**
-- **Financial Exposure**
-- **Risk Score**
+Fitur tersebut merupakan hasil pengolahan untuk eksperimen dan bukan ukuran risiko kredit resmi.
 
-These features combine existing financial information into variables that may provide additional information for credit score classification.
+## Modeling
 
-## Model Development
-
-Three machine learning algorithms were explored and compared:
+Tiga algoritma dibandingkan:
 
 - Logistic Regression
 - Random Forest
 - XGBoost
 
-The models were trained using a stratified approach to maintain the distribution of the three credit score categories.
+Dua pendekatan penanganan ketidakseimbangan kelas diuji, yaitu **SMOTE** dan **Class Weight**. Optimasi hyperparameter dilakukan menggunakan **Optuna** dengan validasi silang.
 
-Class imbalance was also considered during model development using techniques such as class weighting.
+## Evaluasi Model
 
-Hyperparameter tuning was performed using **Optuna** to search for better model configurations.
+Tabel berikut menampilkan hasil eksperimen notebook pada data uji.
 
-## Model Evaluation
+Precision, recall, dan F1 menggunakan **macro average**, sehingga setiap kelas memiliki bobot yang sama dalam perhitungan. ROC-AUC menggunakan pendekatan **One-vs-Rest dengan macro average**.
 
-Model performance was evaluated using several classification metrics:
-
-- Accuracy
-- Precision
-- Recall
-- F1-Score
-- ROC-AUC
-- Confusion Matrix
-
-The comparison between models was used to determine the most suitable model for the final prediction system.
-
-
-## Results
-
-Two approaches were evaluated for handling class imbalance: **SMOTE** and **Class Weight**. Hyperparameter optimization using **Optuna** was applied to Logistic Regression, Random Forest, and XGBoost.
-
-Model performance was evaluated using Accuracy, Macro Precision, Macro Recall, Macro F1-Score, and ROC-AUC.
-
-### Model Comparison
-
-| Model | Method | Accuracy | Precision | Recall | F1-Score | ROC-AUC |
+| Model | Pendekatan | Accuracy | Macro Precision | Macro Recall | Macro F1 | ROC-AUC |
 |---|---|---:|---:|---:|---:|---:|
-| Logistic Regression | SMOTE + Optuna | 66.04% | 64.51% | 69.79% | 65.46% | 0.8111 |
-| Random Forest | SMOTE + Optuna | 74.14% | 71.73% | 74.67% | 72.87% | 0.8765 |
-| XGBoost | SMOTE + Optuna | 74.28% | 73.02% | 71.63% | 72.27% | 0.8757 |
-| Logistic Regression | Class Weight + Optuna | 65.94% | 64.35% | 69.57% | 65.36% | 0.8132 |
-| **Random Forest** | **Class Weight + Optuna** | **75.10%** | **73.52%** | 72.99% | 73.24% | **0.8812** |
-| **XGBoost** | **Class Weight + Optuna** | 74.64% | 72.61% | **74.31%** | **73.37%** | 0.8792 |
+| Logistic Regression | SMOTE + Optuna | 66,04% | 64,51% | 69,79% | 65,46% | 0,8111 |
+| Random Forest | SMOTE + Optuna | 74,14% | 71,73% | 74,67% | 72,87% | 0,8765 |
+| XGBoost | SMOTE + Optuna | 74,28% | 73,02% | 71,63% | 72,27% | 0,8757 |
+| Logistic Regression | Class Weight + Optuna | 65,94% | 64,35% | 69,57% | 65,36% | 0,8132 |
+| Random Forest | Class Weight + Optuna | **75,10%** | **73,52%** | 72,99% | 73,24% | **0,8812** |
+| XGBoost | Class Weight + Optuna | 74,64% | 72,61% | 74,31% | **73,37%** | 0,8792 |
 
-### Best Performing Models
+### Keyfindings
 
-The experiments showed that **Class Weight + Optuna** provided strong overall performance for both Random Forest and XGBoost.
+- **Random Forest + Class Weight + Optuna** memperoleh accuracy tertinggi sebesar **75,10%** dan ROC-AUC tertinggi sebesar **0,8812**.
+- **XGBoost + Class Weight + Optuna** memperoleh macro F1 tertinggi sebesar **73,37%**.
+- Di antara konfigurasi Class Weight + Optuna, XGBoost memperoleh macro recall tertinggi sebesar **74,31%**.
+- Jika seluruh enam konfigurasi dibandingkan, macro recall tertinggi diperoleh **Random Forest + SMOTE + Optuna**, yaitu **74,67%**.
+- Kedua model berbasis tree menunjukkan hasil lebih tinggi daripada Logistic Regression pada metrik yang ditampilkan.
 
-**Random Forest with Class Weight + Optuna** achieved the highest overall accuracy and ROC-AUC:
+## Evaluasi XGBoost per Kelas
 
-- **Accuracy:** 75.10%
-- **Macro Precision:** 73.52%
-- **Macro Recall:** 72.99%
-- **Macro F1-Score:** 73.24%
-- **ROC-AUC:** 0.8812
+Hasil berikut berasal dari XGBoost dengan Class Weight + Optuna.
 
-Meanwhile, **XGBoost with Class Weight + Optuna** achieved the highest Macro F1-Score and Macro Recall:
-
-- **Accuracy:** 74.64%
-- **Macro Precision:** 72.61%
-- **Macro Recall:** 74.31%
-- **Macro F1-Score:** 73.37%
-- **ROC-AUC:** 0.8792
-
-This shows that model selection depends on the evaluation objective. Random Forest provided the strongest overall accuracy and class-separation performance, while XGBoost provided a slightly better balance between recall and F1-score across the three credit score categories.
-
-### Class-Level Performance
-
-For the XGBoost model with Class Weight + Optuna, the classification results were:
-
-| Credit Score | Precision | Recall | F1-Score |
+| Kategori | Precision | Recall | F1 |
 |---|---:|---:|---:|
-| Poor | 0.74 | 0.77 | 0.75 |
-| Standard | 0.79 | 0.75 | 0.77 |
-| Good | 0.65 | 0.72 | 0.68 |
+| Poor | 0,74 | 0,77 | 0,75 |
+| Standard | 0,79 | 0,75 | 0,77 |
+| Good | 0,65 | 0,72 | 0,68 |
 
-The model performed strongest on the **Standard** and **Poor** categories. The **Good** category remained the most challenging class, although class weighting helped the model achieve a recall of 72%.
+Kategori **Good** memiliki F1 paling rendah, sehingga masih menjadi bagian yang perlu ditingkatkan.
 
 ### Confusion Matrix
 
-The confusion matrix was used to analyze prediction errors across the three credit score categories.
+Baris menunjukkan kelas aktual dan kolom menunjukkan hasil prediksi.
 
-For the XGBoost model with Class Weight + Optuna:
-
-| Actual / Predicted | Poor | Standard | Good |
+| Aktual / Prediksi | Poor | Standard | Good |
 |---|---:|---:|---:|
-| Poor | 1,106 | 283 | 51 |
-| Standard | 376 | 1,975 | 300 |
+| Poor | 1.106 | 283 | 51 |
+| Standard | 376 | 1.975 | 300 |
 | Good | 15 | 243 | 651 |
 
-The model correctly classified **1,106 Poor**, **1,975 Standard**, and **651 Good** observations from the test set.
+Model mengklasifikasikan **3.732 dari 5.000 observasi data uji** dengan benar, sesuai accuracy sebesar **74,64%**.
 
-### Key Findings
+## Pemilihan Model
 
-- Random Forest with Class Weight + Optuna achieved the **highest Accuracy (75.10%) and ROC-AUC (0.8812)**.
-- XGBoost with Class Weight + Optuna achieved the **highest Macro F1-Score (73.37%) and Macro Recall (74.31%)**.
-- Class Weight generally produced competitive results compared with SMOTE while avoiding the need to generate synthetic training samples.
-- Logistic Regression showed lower performance than the tree-based models, indicating that the relationships between financial features and credit score categories may not be fully captured by a linear decision boundary.
-- Random Forest and XGBoost showed similar overall performance, with different advantages depending on the evaluation metric.
+Dalam eksperimen notebook, **XGBoost dengan Class Weight + Optuna** dipilih karena menghasilkan macro F1 tertinggi. Pemilihan ini mempertimbangkan performa pada seluruh kelas dalam kondisi distribusi kelas yang tidak seimbang. Random Forest tetap menjadi alternatif dengan accuracy dan ROC-AUC yang sedikit lebih tinggi.
 
-## Final Model Selection
+## Implementasi Aplikasi dan AWS
 
-Although Random Forest achieved the highest Accuracy (75.10%) and ROC-AUC (0.8812), XGBoost with Class Weight + Optuna achieved the highest Macro Recall (74.31%) and Macro F1-Score (73.37%).
+Aplikasi Streamlit menyediakan formulir untuk memasukkan informasi keuangan dan menampilkan kategori skor kredit beserta probabilitas prediksi model.
 
-XGBoost was selected for deployment because the project prioritized balanced predictive performance across all three credit score categories rather than accuracy alone.
+Implementasi AWS yang didokumentasikan mencakup:
 
-The final model was then packaged and integrated into the cloud deployment pipeline using AWS SageMaker and EC2.
+- **Amazon S3** untuk penyimpanan artefak model.
+- **Amazon SageMaker** untuk konfigurasi layanan inferensi model.
+- **Amazon EC2** untuk menjalankan aplikasi Streamlit.
 
-## Deployment
+Hasil evaluasi pada README ini merujuk pada eksperimen notebook. Dokumentasi deployment mencakup eksekusi terpisah, sehingga kesesuaian versi model aplikasi dengan hasil eksperimen perlu diperhatikan.
 
-After model development and evaluation, the selected model was packaged as a reusable model artifact and prepared for cloud deployment.
+## Limitation
 
-The deployment architecture uses several AWS services:
+- Proyek dikembangkan untuk pembelajaran dan demonstrasi klasifikasi.
+- Hasil evaluasi berlaku pada pembagian data dan konfigurasi eksperimen yang digunakan.
+- Probabilitas keluaran model tidak otomatis menunjukkan tingkat kepastian yang telah dikalibrasi.
+- Penggunaan pada data baru memerlukan evaluasi tambahan.
 
-- **Amazon S3** for storing the model artifact.
-- **Amazon SageMaker** for serving the machine learning model through a real-time inference endpoint.
-- **Amazon EC2** for hosting the Streamlit web application.
+## Demo dan Dokumentasi
 
-The Streamlit application collects financial information from users, sends the required data for prediction, and displays the predicted credit score category.
+- [Buka Demo Streamlit](https://aws-demo-1-uubwmepozsrbfpza5iga7z.streamlit.app/)
+- [Lihat Dokumentasi Deployment](https://drive.google.com/drive/folders/1EdFbWz2zYBAbWpGpBoyB6NfdKXqA7iUr?usp=sharing)
 
-### Deployment Architecture
+## Penulis
 
-```text
-                    ┌─────────────────────┐
-                    │        User         │
-                    └──────────┬──────────┘
-                               │
-                               ▼
-                    ┌─────────────────────┐
-                    │   Streamlit App     │
-                    │      AWS EC2        │
-                    └──────────┬──────────┘
-                               │
-                         Prediction Request
-                               │
-                               ▼
-                    ┌─────────────────────┐
-                    │ Amazon SageMaker    │
-                    │ Inference Endpoint  │
-                    └──────────┬──────────┘
-                               │
-                               ▼
-                    ┌─────────────────────┐
-                    │   Trained Model     │
-                    │   Model Artifact    │
-                    └─────────────────────┘
-                               ▲
-                               │
-                    ┌─────────────────────┐
-                    │      Amazon S3      │
-                    │   Model Storage     │
-                    └─────────────────────┘
-
-Documentation : https://drive.google.com/drive/folders/1EdFbWz2zYBAbWpGpBoyB6NfdKXqA7iUr?usp=sharing
-AWS Public Link : https://aws-demo-1-uubwmepozsrbfpza5iga7z.streamlit.app/
-
-
+Fransciska Olivia Putri Warae  
+Mahasiswa Data Science, BINUS University
