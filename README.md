@@ -1,4 +1,4 @@
-# Klasifikasi Skor Kredit
+# Credit Score Classification
 
 Proyek akhir mata kuliah Model Deployment untuk mengklasifikasikan skor kredit berdasarkan informasi keuangan dan riwayat kredit. Proyek mencakup persiapan data, perbandingan model machine learning, evaluasi, serta implementasi aplikasi menggunakan Streamlit dan layanan AWS.
 
