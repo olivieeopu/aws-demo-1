@@ -110,7 +110,7 @@ Baris menunjukkan kelas aktual dan kolom menunjukkan hasil prediksi.
 
 Model mengklasifikasikan **3.732 dari 5.000 observasi data uji** dengan benar, sesuai accuracy sebesar **74,64%**.
 
-## Pemilihan Model
+## Pemilihan Final Model
 
 Dalam eksperimen notebook, **XGBoost dengan Class Weight + Optuna** dipilih karena menghasilkan macro F1 tertinggi. Pemilihan ini mempertimbangkan performa pada seluruh kelas dalam kondisi distribusi kelas yang tidak seimbang. Random Forest tetap menjadi alternatif dengan accuracy dan ROC-AUC yang sedikit lebih tinggi.
 
